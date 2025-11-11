@@ -1,0 +1,17 @@
+<h1>{{ question.question_text }}</h1>
+
+{% with total=question.total_votes %}
+<ul>
+{% for choice in question.choice_set.all %}
+    {% if total > 0 %}
+        {% widthratio choice.votes total 100 as percent %}
+        <li>{{ choice.choice_text }} — {{ choice.votes }} голос(ов)
+            ({{ percent }}%)</li>
+    {% else %}
+        <li>{{ choice.choice_text }} — 0%</li>
+    {% endif %}
+{% endfor %}
+</ul>
+{% endwith %}
+
+<a href="{% url 'polls:index' %}">Назад</a>
