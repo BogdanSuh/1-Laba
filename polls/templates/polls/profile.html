@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Мой профиль</title>
+</head>
+<body>
+    <h1>Профиль пользователя: {{ profile.user.username }}</h1>
+
+    <p><strong>Email:</strong> {{ profile.user.email }}</p>
+    <p><strong>Локация:</strong> {{ profile.location|default:"Не указана" }}</p>
+    <p><strong>О себе:</strong> {{ profile.bio|default:"Не указано" }}</p>
+
+    <h3>Аватар:</h3>
+    {% if profile.avatar %}
+        <img src="{{ profile.avatar.url }}" alt="Аватар" width="150" style="border-radius: 50%;">
+    {% else %}
+        <div style="width: 150px; height: 150px; background-color: #eee; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 14px; color: #666;">
+            Аватар
+        </div>
+    {% endif %}
+
+    <p><a href="{% url 'polls:profile_edit' %}">Редактировать профиль</a></p>
+    <p><a href="{% url 'polls:profile_delete' %}" style="color: red;">Удалить профиль</a></p>
+    <p><a href="{% url 'polls:index' %}">← Вернуться к опросам</a> | <a href="{% url 'polls:logout' %}">Выйти</a></p>
+</body>
+</html>

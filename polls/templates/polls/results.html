@@ -1,17 +1,31 @@
-<h1>{{ question.question_text }}</h1>
+<!-- polls/templates/polls/results.html -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Результаты</title>
+</head>
+<body>
+    <h2>Результаты опроса: {{ question.question_text }}</h2>
 
-{% with total=question.total_votes %}
-<ul>
-{% for choice in question.choice_set.all %}
-    {% if total > 0 %}
-        {% widthratio choice.votes total 100 as percent %}
-        <li>{{ choice.choice_text }} — {{ choice.votes }} голос(ов)
-            ({{ percent }}%)</li>
+    <p><a href="{% url 'polls:index' %}">&larr; Все опросы</a></p>
+
+    {% if question.total_votes > 0 %}
+        <p>Всего проголосовало: {{ question.total_votes }}</p>
+        <ul>
+        {% for choice in question.choice_set.all %}
+            <li>
+                {{ choice.choice_text }} — 
+                {{ choice.votes }} голосов ({{ choice.votes|floatformat:"0" }}%)
+            </li>
+        {% endfor %}
+        </ul>
     {% else %}
-        <li>{{ choice.choice_text }} — 0%</li>
+        <p>Пока никто не проголосовал.</p>
     {% endif %}
-{% endfor %}
-</ul>
-{% endwith %}
 
-<a href="{% url 'polls:index' %}">Назад</a>
+    <p>
+        <a href="{% url 'polls:detail' question.id %}">Вернуться к опросу</a>
+    </p>
+</body>
+</html>

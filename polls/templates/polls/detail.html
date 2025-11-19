@@ -1,14 +1,41 @@
-<form action="{% url 'polls:vote' question.id %}" method="post">
-    {% csrf_token %}
-    <fieldset>
-        <legend>
-            <h1>{{question.question_text}}</h1>
-        </legend>
-        {% if error_message %}<p><strong> {{error_message}}</strong></p>{% endif %}
-        {% for choice in question.choice_set.all %}
-        <input type="radio" name="choice" id="choice{{forloop.counter}}" value="{{choice.id}}">
-        <label for="choice{{forloop.counter}}">{{choice.choice_text}}</label><br>
-        {% endfor %}
-    </fieldset>
-<input type="submit" value="Vote">
-</form>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ question.question_text }}</title>
+</head>
+<body>
+    <h1>{{ question.question_text }}</h1>
+
+    {% if error_message %}
+        <p style="color: red;"><strong>{{ error_message }}</strong></p>
+    {% endif %}
+
+    {% if not question.is_active %}
+        <p style="color: orange;"><strong>Этот опрос завершён.</strong></p>
+        <p>Результаты:</p>
+        <ul>
+            {% for choice in question.choice_set.all %}
+                <li>{{ choice.choice_text }} — {{ choice.votes }} голос{{ choice.votes|pluralize:"а,ы,ов" }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <form action="{% url 'polls:vote' question.id %}" method="post">
+            {% csrf_token %}
+            {% for choice in question.choice_set.all %}
+                <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
+                <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
+            {% endfor %}
+            <input type="submit" value="Голосовать">
+        </form>
+    {% endif %}
+
+    <p><a href="{% url 'polls:index' %}">← Вернуться к списку опросов</a></p>
+
+    {% if user.is_authenticated %}
+        <p><a href="{% url 'polls:profile_view' %}">Мой профиль</a> | <a href="{% url 'polls:logout' %}">Выйти</a></p>
+    {% else %}
+        <p><a href="{% url 'polls:register' %}">Зарегистрироваться</a> | <a href="{% url 'polls:login' %}">Войти</a></p>
+    {% endif %}
+</body>
+</html>

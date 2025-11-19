@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Редактирование профиля</title>
+</head>
+<body>
+    <h1>Редактирование профиля</h1>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <p>
+            <label>Аватар (обязательно):</label><br>
+            {{ form.avatar }}
+        </p>
+        <p>
+            <label>О себе:</label><br>
+            {{ form.bio }}
+        </p>
+        <p>
+            <label>Локация:</label><br>
+            {{ form.location }}
+        </p>
+        <p><input type="submit" value="Сохранить изменения"></p>
+    </form>
+
+    <p><a href="{% url 'polls:profile_view' %}">← Отменить и вернуться к профилю</a></p>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Удаление профиля</title>
+</head>
+<body>
+    <h1 style="color: red;">Внимание!</h1>
+
+    <p>Вы уверены, что хотите <strong>полностью удалить</strong> свой профиль?</p>
+    <p>Это действие <strong>необратимо</strong>:
+        <br>— Все ваши голоса будут удалены.
+        <br>— Ваш аккаунт исчезнет навсегда.
+    </p>
+
+    <form method="post">
+        {% csrf_token %}
+        <p><input type="submit" value="Да, удалить профиль" style="background-color: #d9534f; color: white; border: none; padding: 10px 20px;"></p>
+    </form>
+
+    <p><a href="{% url 'polls:profile_view' %}">← Отменить и вернуться к профилю</a></p>
+</body>
+</html>
